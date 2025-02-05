@@ -86,11 +86,25 @@
       100% { transform: translateY(0) rotate(360deg); }
     }
 
+    @keyframes floatBear {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-15px) scale(1.1); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
     .floating-heart {
       position: fixed;
       animation: float 2s infinite ease-in-out;
       font-size: 2rem;
       pointer-events: none;
+    }
+
+    .floating-bear {
+      position: fixed;
+      animation: floatBear 3s infinite ease-in-out;
+      pointer-events: none;
+      width: 60px;
+      height: 60px;
     }
 
     .red-heart {
@@ -160,6 +174,30 @@
     const llamameBtn = document.getElementById('llamameBtn');
     let heartCount = 0;
 
+    function createFloatingBear() {
+      const bear = document.createElement('div');
+      bear.className = 'floating-bear';
+      
+      // SVG del osito
+      bear.innerHTML = `
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="50" fill="#B07C55"/>
+          <circle cx="75" cy="90" r="5" fill="black"/>
+          <circle cx="125" cy="90" r="5" fill="black"/>
+          <circle cx="65" cy="60" r="15" fill="#B07C55"/>
+          <circle cx="135" cy="60" r="15" fill="#B07C55"/>
+          <circle cx="100" cy="105" r="8" fill="#8B4513"/>
+          <path d="M85 115 Q100 125 115 115" fill="none" stroke="black" stroke-width="2"/>
+          <path d="M100 140 L90 130 Q80 120 90 110 Q100 100 100 110 Q100 100 110 110 Q120 120 110 130 Z" fill="red"/>
+        </svg>
+      `;
+      
+      bear.style.left = Math.random() * (window.innerWidth - 60) + 'px';
+      bear.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+      document.body.appendChild(bear);
+      setTimeout(() => bear.remove(), 3000);
+    }
+
     function createHeart() {
       const heart = document.createElement('div');
       heart.className = 'floating-heart';
@@ -181,6 +219,7 @@
       hearts.style.display = 'block';
       llamameBtn.style.display = 'block';
       setInterval(createHeart, 300);
+      setInterval(createFloatingBear, 500); // Agregar ositos flotantes
     });
 
     noBtn.addEventListener('mouseover', () => {
